@@ -38,8 +38,6 @@ for (irun in seq(nruns)) {
 }
 monthly.cost <- monthly.cost / nruns
 
-## Plot 
-matplot(t(monthly.cost), type='l')
 ## Summarise results
 m  <- inv.sys$num_policies
 DT <- data.table::data.table(idx=rep(seq(m),nruns),result)[,lapply(.SD,mean),idx]
