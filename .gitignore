@@ -1,3 +1,5 @@
+misc/
+
 des/misc
 des/.RData
 des/.Rhistory
@@ -5,3 +7,7 @@ des/inventory/R/.RData
 des/inventory/R/.Rhistory
 des/simlib/.Rhistory
 des/simlib/demo/.Rhistory
+
+glmm/.RData
+glmm/.Rhistory
+glmm/misc
