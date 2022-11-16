@@ -57,6 +57,10 @@ demand <- function(env, ...) {
 
 ## Inventory evaluation function for (s,S) policy, i.e., (minimum level, maximum level)
 evaluate.S <- function(env, ...) {
+  arg <- list(...)
+  if (is.null(i <- arg[["i"]])) {
+      stop("Set policy index i.")
+  }
   order_cost <- 0.0
   if (env$inv_level < env$small_s[i]) {
     # Place an order for the appropriate amount
@@ -76,6 +80,10 @@ evaluate.S <- function(env, ...) {
 
 ## Inventory evaluation function for (s,d) policy, i.e., (minimum level, order size)
 evaluate.d <- function(env, ...) {
+  arg <- list(...)
+  if (is.null(i <- arg[["i"]])) {
+      stop("Set policy index i.")
+  }
   order_cost <- 0.0
   if (env$inv_level < env$small_s[i]) {
     # Place an order for the appropriate amount
