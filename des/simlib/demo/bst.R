@@ -1,5 +1,5 @@
 rm(list=ls())
-setwd("/Users/gva/solutions/des")
+setwd("~/solutions/des")
 
 Rcpp::sourceCpp("./simlib/src/bst.cpp")
 
