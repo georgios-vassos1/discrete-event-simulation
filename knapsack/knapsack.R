@@ -1,5 +1,5 @@
 rm(list=ls())
-setwd("~/solutions/rl")
+setwd("~/solutions/knapsack")
 
 # 0-1 Knapsack Problem using recursion
 # www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
@@ -128,4 +128,13 @@ knapsack <- function(W, wt, val, n) {
 }
 
 print(knapsack(W, wt, val, n))
+
+## Multi-dimensional knapsack
+
+Rcpp::sourceCpp(file = '~/solutions/knapsack/src/cmultiknap.cpp')
+
+if (file.exists("/Users/gva/solutions/knapsack/mknap1-1.txt")) {
+  rGenTest("/Users/gva/solutions/knapsack/mknap1-1.txt")
+}
+
 
