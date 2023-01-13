@@ -75,7 +75,7 @@ boards <- storeAllBoards()
 Es <- getBoardState(env, boards)
 Es
 
-MCTS <- function(cpuct=1.0) {
+MCTS <- function(cpuct=1.0, numMCTSSims=10L) {
   MCTS        <- new.env(hash = FALSE, parent = emptyenv())
   MCTS$Qsa    <- list()
   MCTS$Nsa    <- list()
@@ -84,6 +84,7 @@ MCTS <- function(cpuct=1.0) {
   MCTS$Es     <- list()
   MCTS$Vs     <- list()
   MCTS$cpuct  <- cpuct
+  MCTS$numMCTSSims <- numMCTSSims
   class(MCTS) <- "Monte Carlo search tree"
   return(MCTS)
 }
@@ -110,10 +111,10 @@ mcts_search <- function(mcts, board, player) {
   }
 
   if (is.null(mcts$Ps[[s]])) {
-    tmp <- c(0.6707,0.6248,0.8812,0.0621,0.3629,0.5467,0.205,0.2302,0.7884)
+    tmp <- c(0.6707,0.6248,0.8812,0.0621,0.3629,0.5467,0.205,0.2302,0.7884) 
     tmp <- tmp / sum(tmp)
-    mcts$Ps[[s]] <- tmp
-    v <- 0.242
+    mcts$Ps[[s]] <- tmp   # Replace with Neural Network policy output
+    v            <- 0.242 # Replace with Neural Network value approximation
     valids <- (c(board) != 0L)
     mcts$Ps[[s]] <- mcts$Ps[[s]] * valids
     sum_Ps_s     <- sum(mcts$Ps[[s]])
@@ -151,5 +152,30 @@ mcts_search <- function(mcts, board, player) {
 mcts$Ps <- mcts$Vs <- list()
 mcts_search(mcts, boards[[sample(length(boards),1)]], 1L)
 mcts$Ps
+
+getActionProb <- function(mcts, board, player, temp=1.0) {
+  # This function performs numMCTSSims simulations of MCTS starting from
+  # canonicalBoard.
+  # Returns:
+  #   probs: a policy vector where the probability of the ith action is
+  #          proportional to Nsa[(s,a)]**(1./temp)
+  for (i in seq(numMCTSSims)) {
+    mcts_search(mcts, board, player)
+  }
+  s <- mat2str(board * player)
+  counts <- mcts$Nsa[[s]]
+
+  if (temp == 0.0) {
+    actions <- which.max(counts)
+    a.opt   <- sample(actions, 1L)
+    probs   <- rep(0.0, length(counts))
+    probs[a.opt] <- 1.0
+    return(probs)
+  }
+
+  counts <- counts^(1.0/temp)
+  probs  <- counts / sum(counts)
+  return(probs)
+}
 
 ######################################################################
