@@ -75,21 +75,24 @@ boards <- storeAllBoards()
 Es <- getBoardState(env, boards)
 Es
 
-MCTS <- function(cpuct=1.0, numMCTSSims=10L) {
+MCTS <- function(game = NULL, nnet = NULL, ...) {
   MCTS        <- new.env(hash = FALSE, parent = emptyenv())
+  args        <- list(...)
+  MCTS$game   <- game
+  MCTS$nnet   <- nnet
   MCTS$Qsa    <- list()
   MCTS$Nsa    <- list()
   MCTS$Ns     <- list()
   MCTS$Ps     <- list()
   MCTS$Es     <- list()
   MCTS$Vs     <- list()
-  MCTS$cpuct  <- cpuct
-  MCTS$numMCTSSims <- numMCTSSims
+  MCTS$cpuct  <- args[["cpuct"]]
+  MCTS$numMCTSSims <- args[["numMCTSSims"]]
   class(MCTS) <- "Monte Carlo search tree"
   return(MCTS)
 }
 
-mcts <- MCTS()
+mcts <- MCTS(cpuct=1.0, numMCTSSims=10L)
 mcts$Es <- Es
 mcts$Qsa <- vector(mode = "list", length = length(Es))
 mcts$Nsa <- vector(mode = "list", length = length(Es))
@@ -149,7 +152,7 @@ mcts_search <- function(mcts, board, player) {
   return(-v)
 }
 
-mcts$Ps <- mcts$Vs <- list()
+# mcts$Ps <- mcts$Vs <- list()
 mcts_search(mcts, boards[[sample(length(boards),1)]], 1L)
 mcts$Ps
 
