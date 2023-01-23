@@ -1,3 +1,76 @@
+library(torch)
+library(torchvision)
+library(luz)
+
+dir <- "~/solutions/rl/misc/data"
+
+visualize <- function(ds, idx) {
+  ds$data[idx,1:28,1:28] |>
+    reshape2::melt() |>
+    ggplot(aes(x=Var2, y=Var1, fill=value))+
+    geom_tile(show.legend = FALSE) + 
+    xlab("") + ylab("") +
+    scale_fill_gradient(low="white", high="black")
+  
+}
+
+transform <- function(img, maxval=255.0) {
+  img |>
+    (\(x) x/maxval)() |>
+    transform_to_tensor()
+}
+
+train_ds <- mnist_dataset(
+  dir,
+  download  = FALSE,
+  transform = transform
+)
+
+test_ds <- mnist_dataset(
+  dir,
+  train     = FALSE,
+  transform = transform
+)
+
+# visualize(train_ds, 2L)
+
+batch_size <- 128 # Number of images to be seen during one training iteration
+
+train_dl <- dataloader(train_ds, batch_size = batch_size, shuffle = TRUE)
+test_dl  <- dataloader(test_ds,  batch_size = batch_size)
+
+net <- nn_module(
+  "Net",
+
+  initialize = function() {
+    self$fc1 <- nn_linear(28L * 28L, 128L)
+    self$fc2 <- nn_linear(128L, 10L)
+
+    self$dropout <- nn_dropout2d(0.5)
+  },
+
+  forward = function(x) {
+    x %>%                                  # N * 1 * 28 * 28
+      torch_flatten(start_dim = 2) %>%     # N * 784
+      self$fc1() %>%                       # N * 128
+      nnf_relu() %>% 
+      self$dropout() %>% 
+      self$fc2()                           # N * 10
+  }
+)
+
+fitted <- net %>%
+  setup(
+    loss      = nn_cross_entropy_loss(),
+    optimizer = optim_adam,
+    metrics   = list(
+      luz_metric_accuracy()
+    )
+  ) %>%
+  fit(train_dl, epochs = 10, valid_data = test_dl)
+# luz_save(obj = fitted, path = "~/solutions/rl/misc/data/mnist_fc_1.pt")
+
+
 ## Example use of torch with R
 
 library(torch)
