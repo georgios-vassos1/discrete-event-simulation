@@ -29,8 +29,8 @@ execute_episode <- function(coach) {
   #                  the player eventually won the game, else -1.
   trainExamples   <- list()
   board           <- getInitBoard(coach$game)
-  coach$curPlayer <- 1
-  episodeStep     <- 0
+  coach$curPlayer <- 1L
+  episodeStep     <- 0L
   while (1L) {
     episodeStep    <- episodeStep + 1L
     canonicalBoard <- getCanonicalForm(coach$game, board, coach$curPlayer)
