@@ -45,6 +45,13 @@ DataUnit <- function(filex, reward_variance=1.0, ...) {
   return(data)
 }
 
+get_new_batch <- function(datum, size=100L, replace=TRUE, ...) {
+  idx <- sample(seq(datum$observation_count), size, replace)
+  list(
+    context=datum$context[idx,], arms=datum$arms[idx]
+  )
+}
+
 DataUnitTest <- function(...) {
   world <- DataUnit(index[1L])
 }
