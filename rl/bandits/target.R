@@ -83,7 +83,7 @@ policy <- function(targetpi, X_new, ...) {
 
 if (FALSE) {
   world <- DataUnit(index[1L])
-  tp <- TargetPolicy(arm_count = length(unique(c(world$arms))))
+  tp    <- TargetPolicy(arm_count = length(unique(c(world$arms))))
   nx_const(tp, arm=2L)
   tp$nx_assignment
   nx_runif(tp)
