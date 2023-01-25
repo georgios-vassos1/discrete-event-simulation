@@ -81,9 +81,10 @@ policy <- function(targetpi, X_new, ...) {
   }
 }
 
-if (FALSE) {
+target_policy_test <- function(...) {
   world <- DataUnit(index[1L])
   tp    <- TargetPolicy(arm_count = length(unique(c(world$arms))))
+  # Test non-contextual policy
   nx_const(tp, arm=2L)
   tp$nx_assignment
   nx_runif(tp)
