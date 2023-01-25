@@ -168,13 +168,13 @@ compute_mrdr <- function(opee, ...) {
   opee$mrdr <- mean_and_var(D)
 }
 
-if (FALSE) {
+opee_test <- function(...) {
   world  <- DataUnit(index[1L])
   narms  <- world$arm_count # length(unique(world$arms))
   bandit <- LoggingPolicy(batch_count = 100L, batch_size = 100L, outcome_model = lm, epsmult = 0.01)
   logging_policy_run(bandit, world)
   opee  <- OPEEstimator(arm_count = narms, bandit = bandit)
-  contextual(opee$target, batch=world, outcome_model=lm)
+  contextual(opee$target, batch=get_new_batch(world), outcome_model=lm)
   CrossFitting(opee)
   compute_truth(opee)
 }
