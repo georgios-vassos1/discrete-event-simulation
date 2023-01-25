@@ -168,10 +168,9 @@ compute_mrdr <- function(opee, ...) {
   opee$mrdr <- mean_and_var(D)
 }
 
-
 if (FALSE) {
   world  <- DataUnit(index[1L])
-  narms  <- length(unique(world$arms))
+  narms  <- world$arm_count # length(unique(world$arms))
   bandit <- LoggingPolicy(batch_count = 100L, batch_size = 100L, outcome_model = lm, epsmult = 0.01)
   logging_policy_run(bandit, world)
   opee  <- OPEEstimator(arm_count = narms, bandit = bandit)
