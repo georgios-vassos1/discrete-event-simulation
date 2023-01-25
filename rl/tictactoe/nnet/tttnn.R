@@ -55,12 +55,12 @@ TicTacToeNNet <- nn_module(
       self$fc1() %>%
       self$fc_bn1() %>%
       nnf_relu() %>% 
-      nn_dropout2d(p = self$åargs[["dropout"]], self$training) %>%
+      nn_dropout2d(p = self$args[["dropout"]], self$training) %>%
 
       self$fc2() %>%
       self$fc_bn2() %>%
       nnf_relu() %>% 
-      nn_dropout2d(p = self$åargs[["dropout"]], self$training) %>%
+      nn_dropout2d(p = self$args[["dropout"]], self$training) %>%
 
       self$fc2() -> x
 
