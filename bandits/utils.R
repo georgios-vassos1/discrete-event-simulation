@@ -1,5 +1,5 @@
 
-reticulate::source_python("~/solutions/rl/bandits/exutils.py")
+reticulate::source_python("~/solutions/bandits/exutils.py")
 
 index <- list.files("~/pcmabinf/OpenML-CC18")
 
