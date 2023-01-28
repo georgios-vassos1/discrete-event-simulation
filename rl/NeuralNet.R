@@ -70,9 +70,7 @@ fitted <- net %>%
   fit(train_dl, epochs = 10, valid_data = test_dl)
 # luz_save(obj = fitted, path = "~/solutions/rl/misc/data/mnist_fc_1.pt")
 
-
 ## Example use of torch with R
-
 library(torch)
 library(luz)
 library(torchvision)
