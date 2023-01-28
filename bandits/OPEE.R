@@ -173,7 +173,7 @@ opee_test <- function(...) {
   narms  <- world$arm_count # length(unique(world$arms))
   bandit <- LoggingPolicy(batch_count = 100L, batch_size = 100L, outcome_model = lm, epsmult = 0.01)
   logging_policy_run(bandit, world)
-  opee  <- OPEEstimator(arm_count = narms, bandit = bandit)
+  opee   <- OPEEstimator(arm_count = narms, bandit = bandit)
   contextual(opee$target, batch=get_new_batch(world), outcome_model=lm)
   CrossFitting(opee)
   compute_truth(opee)
