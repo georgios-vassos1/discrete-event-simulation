@@ -6,7 +6,6 @@ source("~/solutions/rl/tictactoe/logic.R")
 source("~/solutions/rl/tictactoe/game.R")
 source("~/solutions/rl/utils.R")
 
-
 MCTS <- function(game = NULL, nnet = NULL, ...) {
   MCTS        <- new.env(hash = FALSE, parent = emptyenv())
   args        <- list(...)
@@ -84,7 +83,7 @@ getActionProb <- function(mcts, board, player, temp=1.0) {
   }
   s <- mat2str(board * player)
   counts <- mcts$Nsa[[s]]
-  
+
   if (temp == 0.0) {
     actions <- which.max(counts)
     a.opt   <- sample(actions, 1L)
@@ -92,7 +91,7 @@ getActionProb <- function(mcts, board, player, temp=1.0) {
     probs[a.opt] <- 1.0
     return(probs)
   }
-  
+
   counts <- counts^(1.0/temp)
   probs  <- counts / sum(counts)
   return(probs)
