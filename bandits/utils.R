@@ -1,7 +1,15 @@
 
-reticulate::source_python("~/solutions/bandits/exutils.py")
+# reticulate::source_python("~/solutions/bandits/exutils.py")
 
-index <- list.files("~/pcmabinf/OpenML-CC18")
+# index <- list.files("~/pcmabinf/OpenML-CC18")
+index <- list.files("~/solutions/bandits/data")
+
+pickle2rds <- function(...) {
+  for (i in index) {
+    print(i)
+    saveRDS(read_pickle(i), paste0("~/solutions/bandits/data/", i))
+  }
+}
 
 ImputeMedian <- function(X) {
   X.dim <- dim(X)
@@ -19,7 +27,8 @@ ImputeMedian <- function(X) {
 DataUnit <- function(filex, reward_variance=1.0, ...) {
   args    <- list(...)
   # Read data index from dump
-  dump    <- read_pickle(filex)
+  # dump    <- read_pickle(filex)
+  dump    <- readRDS(paste0("~/solutions/bandits/data/", filex))
   context <- dump[[1L]]
   arms    <- dump[[2L]] + 1L
   # Simple imputation of missing values
