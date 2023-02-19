@@ -12,6 +12,8 @@ glmm/.RData
 glmm/.Rhistory
 glmm/misc
 
+bandits/data/
+
 rl/.RData
 rl/.Rhistory
 rl/misc/data/
