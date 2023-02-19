@@ -66,7 +66,7 @@ policy <- function(targetpi, X_new, ...) {
   n     <- nrow(X_new)
   narms <- targetpi$arm_count
   if (!targetpi$contextual) {
-    return(matrix(rep(tp$nx_assignment, each=n), ncol=narms))
+    return(matrix(rep(targetpi$nx_assignment, each=n), ncol=narms))
   } else {
     Y_hat <- matrix(NA, nrow = n, ncol = narms)
     A_hat <- matrix(NA, nrow = n, ncol = narms)
