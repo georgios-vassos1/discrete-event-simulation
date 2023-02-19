@@ -56,7 +56,7 @@ CrossFitting <- function(opee, outcome_model=lm, nfolds=5L, ...) {
       if (all(g_star_a==0.0)) {
         w_a <- rep(1.0, length(Ya))
       } else {
-        w_a <- g_star_a * (1-g_a) / g_a^2
+        w_a <- g_star_a * (1-g_a) / (g_a^2)
       }
       ma <- outcome_model(Ya ~ ., data = data.frame(Ya=Ya, Xa), weights=w_a)
       Q_MRDR[valid,a] <- unname(predict(ma, data.frame(X_valid)))
@@ -174,7 +174,10 @@ opee_test <- function(...) {
   bandit <- LoggingPolicy(batch_count = 100L, batch_size = 100L, outcome_model = lm, epsmult = 0.01)
   logging_policy_run(bandit, world)
   opee   <- OPEEstimator(arm_count = narms, bandit = bandit)
-  contextual(opee$target, batch=get_new_batch(world), outcome_model=lm)
+  contextual(opee$target, batch=get_new_batch(world, size = 10000L), outcome_model=lm)
   CrossFitting(opee)
   compute_truth(opee)
+  compute_adr(opee)
+  compute_cadr(opee)
+  c(opee$truth[1L], opee$adr[1L], opee$cadr[1L])
 }

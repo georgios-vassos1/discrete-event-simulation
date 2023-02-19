@@ -19,7 +19,7 @@ LoggingPolicy <- function(
   loggpi$bigblok <- c(0L, cumsum(seq(batch_count)*batch_size))
   loggpi$epsilon <- vector(mode = "numeric", length = batch_count*batch_size)
   loggpi$regret  <- vector(mode = "numeric", length = batch_count*batch_size)
-  class(loggpi)         <- "Logging policy"
+  class(loggpi)  <- "Logging policy"
   return(loggpi)
 }
 
@@ -43,8 +43,11 @@ logging_policy_run <- function(loggpi, data, ...) {
     X_test <- data$context[idx,]
     atab   <- table(loggpi$A)
     unique_arms   <- as.numeric(names(atab))
-    count_per_arm <- ifelse(length(atab) > 0L, as.numeric(atab), 0L)
-    if ((length(unique_arms) == narms) && min(count_per_arm) > 0L) {
+    count_per_arm <- rep(0L, narms)
+    if (length(atab) > 0L) {
+      count_per_arm <- as.numeric(atab)
+    }
+    if ((length(unique_arms) == narms) && (min(count_per_arm) > 0L)) {
       Y_hat_test <- matrix(NA, nrow = batch_size, ncol = narms)
       for (a in seq(narms)) {
         ida <- which(loggpi$A == a)
@@ -75,7 +78,7 @@ logging_policy_run <- function(loggpi, data, ...) {
     loggpi$epsilon[block] <- rep(eps, batch_size)
     loggpi$regret[block]  <- as.numeric(data$arms[idx] != A_test)
     if (!length(outcome_models)) {
-      loggpi$prevP[(bigblok[batch]+1):bigblok[batch+1]] = rep(1.0 / narms, bigblok[batch+1])
+      loggpi$prevP[(bigblok[batch]+1):bigblok[batch+1]] <- rep(1.0 / narms, bigblok[batch+1])
     } else {
       fdx   <- tail(block, 1)
       Y_hat <- matrix(NA, nrow = fdx, ncol = narms)
@@ -99,7 +102,7 @@ logging_policy_test <- function(idx = index[1L], ...) {
     batch_size  <- 100L
   }
   if (is.null(args[["outcome_model"]])) {
-    outcome_model <- lm
+    outcome_model <- rpart::rpart
   }
   if (is.null(args[["epsmult"]])) {
     epsmult <- 1.0
