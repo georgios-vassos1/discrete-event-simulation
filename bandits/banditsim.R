@@ -35,4 +35,3 @@ bandit_simulator_test <- function(...) {
   # Return bandit logs
   banditsim$bandits[[1L]]
 }
-
