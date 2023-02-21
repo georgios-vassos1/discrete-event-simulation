@@ -17,7 +17,7 @@ registerDoParallel(cl)
 
 i     <- 36L # Index 35L is problematic
 world <- DataUnit(index[i]) # Get data
-N     <- 10L # number of experiments
+N     <- 100L # number of experiments
 estimators <- c("dm", "ips", "dr", "adr", "mrdr", "cadr")
 banditsim  <- BanditSimulator(NULL)
 opeesim    <- OPEEsimulator(banditsim, rpart::rpart, rpart::rpart, 100L*100L)
