@@ -85,3 +85,44 @@ test_mdp_env <- function(...) {
   value_function(env)
   env
 }
+
+## OBSOLETE
+if (FALSE) {
+  # reward <- function(x, a, D=seq(0L,9L), h=1.0, p=1.0, K=5.0, M=20L, ...) {
+  #   (1.0/length(D)) * sum(h*pmin(pmax(x+a-D,0.0),M) + p*pmax(D-x-a, 0.0)) + K*(a>0)
+  # }
+  
+  # rNextState <- function(x, a, D=seq(0L,9L), M=20L, ...) sample(pmin(pmax(x+a-D, 0L), M), 1L)
+  
+  # get_actions <- function(x, M=20L, ...) {
+  #   unique(pmax(seq(0L,M)-x,0L))
+  # }
+  # Slow implementation for testing
+  ECb <- matrix(NA, nrow = env$M+1L, ncol = env$M+1L)
+  for (x in seq(0L,env$M)) {
+    for (a in seq(0L,env$M)) {
+      tmp <- 0.
+      for (d in seq(0L,9L)) {
+        tmp <- tmp + (.1)*(1.*min(max(x+a-d,0.0),env$M)+1.*(max(d-x-a,0.)))
+      }
+      ECb[x+1L,a+1L] <- tmp + env$K*(a>0L)
+    }
+  }
+  # Backward dynamic programming
+  V <- matrix(NA, nrow = env$H+1L, ncol = env$M+1L)
+  V[4L,] <- 0.0
+  # gamma  <- 0.593005
+  gamma <- 1.0
+  for (i in seq(env$H,1L)) {
+    for (x in seq(0L,env$M)) {
+      EV <- rep(0.0, env$M+1L)
+      for (a in seq(0L,env$M)) {
+        next_x <- pmin(pmax(x+a-seq(0L,9L), 0.0), env$M) + 1L
+        EV[a+1L] <- c(rep(0.1,10L) %*% V[i+1L,next_x])
+      }
+      V[i,x+1L] <- min(ECb[x+1L,] + gamma*EV)
+    }
+  }
+  V
+}
+
