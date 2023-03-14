@@ -68,7 +68,7 @@ opee_simulator_test <- function(opeesim, i, world, banditsim, ...) {
   get_metrics(opeesim$opees[[i]], estimators = args[["estimators"]])
 }
 
-sequntial_exp <- function(...) {
+sequential_exp <- function(...) {
   i <- 1L   # data set index
   N <- 64L  # number of experiments
   estimators <- c("dm", "ips", "dr", "adr", "mrdr", "cadr")
