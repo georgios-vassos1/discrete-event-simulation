@@ -6,7 +6,10 @@ source("~/solutions/OR/datastructures/bst.R")
 
 
 insertNode_test <- function(...) {
-  keys <- c(10L, 7L, 5L, 8L, 15L, 11L, 18L)
+  args <- list(...)
+  if (is.null(keys <- args[["keys"]])) {
+    keys <- c(10L, 7L, 5L, 8L, 15L, 11L, 18L)
+  }
   root <- insertNode(NULL, keys[1L])
   for (key in keys[-1L]) {
     insertNode(root, key)
@@ -40,3 +43,7 @@ constructBST_test <- function(...) {
   preOrderRec(root) # 7, 5, 6, 8, 10
 }
 
+kSmallestSum_test <- function(...) {
+  root <- insertNode_test(keys = c(20L, 8L, 4L, 12L, 10L, 14L, 22L))
+  kSmallestSum(root, 3L) == 22L
+}

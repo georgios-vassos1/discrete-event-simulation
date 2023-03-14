@@ -172,3 +172,31 @@ deleteNode <- function(root, key) {
     tmp   <- NULL
   }
 }
+
+kSmallestSumRec <- function(root, k, x) {
+  # Base case
+  if (is.null(root)) {
+    return(0L)
+  }
+  if (x$count > k) {
+    return(0L)
+  }
+  # Sum of elements in left subtree
+  res <- kSmallestSumRec(root$left, k, x)
+  if (x$count >= k) {
+    return(res)
+  }
+  res     <- res + root$key
+  x$count <- x$count + 1L
+  if (x$count >= k) {
+    return(res)
+  }
+  # If count is smaller than k, consider the right subtree
+  res + kSmallestSumRec(root$right, k, x)
+}
+
+kSmallestSum <- function(root, k) {
+  x <- Counter()
+  kSmallestSumRec(root, k, x)
+}
+
