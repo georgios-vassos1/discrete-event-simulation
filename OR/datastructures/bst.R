@@ -44,12 +44,75 @@ inorder <- function(root, ...) {
   }
 }
 
+inorderStore <- function(root, chunk = 1000L, ...) {
+  x <- root
+  stack <- Stack()
+  nodes <- vector(mode = "list", length = chunk)
+  cnt   <- 0L
+  while (!is.null(x) || (stack$len > 0L)) {
+    if (!is.null(x)) {
+      push(stack, x)
+      x <- x$left
+    } else {
+      x <- pop(stack)
+      cnt <- cnt + 1L
+      nodes[[cnt]] <- x
+      x <- x$right
+    }
+  }
+  nodes[(cnt+1):chunk] <- NULL
+  nodes
+}
+
+preOrderRec <- function(root, ...) {
+  if (is.null(root)) {
+    return(invisible(NULL))
+  }
+  print(paste0(root$key))
+  preOrderRec(root$left)
+  preOrderRec(root$right)
+}
+
+buildTreeWorker <- function(nodes, start, end) { # Nodes in order from inorder traversal
+  # Base case
+  if (start > end) {
+    return(NULL)
+  }
+  # Middle element of node list becomes root
+  mid  <- (start+end)%/%2L
+  node <- nodes[[mid]]
+  # Construct subtree
+  node$left  <- buildTreeWorker(nodes, start, mid-1L)
+  node$right <- buildTreeWorker(nodes, mid+1L, end)
+  return(node)
+}
+
+constructBST <- function(root) {
+  nodes <- inorderStore(root)
+  n     <- length(nodes)
+  buildTreeWorker(nodes,1L,n)
+}
+
 minValueNode <- function(node) {
   x <- node
   while (!is.null(x$left)) {
     x <- x$left
   }
   x
+}
+
+searchNode <- function(root, key) {
+  x <- root
+  while (!is.null(root)) {
+    if (key > x$key) {
+      x <- x$right
+    } else if (key < x$key) {
+      x <- x$left
+    } else {
+      return(x)
+    }
+  }
+  NULL
 }
 
 deleteNode <- function(root, key) {
