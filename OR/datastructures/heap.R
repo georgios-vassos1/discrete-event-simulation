@@ -1,10 +1,10 @@
 
 MaxHeap <- function(maxSize, ...) {
   heap <- new.env(hash = FALSE, parent = emptyenv())
-  heap$array    <- NULL
-  heap$maxSize  <- maxSize
-  heap$size     <- 0L
-  class(heap) <- "Max heap"
+  heap$array   <- NULL
+  heap$maxSize <- maxSize
+  heap$size    <- 0L
+  class(heap)  <- "Max heap"
   return(heap)
 }
 
@@ -49,10 +49,10 @@ MaxHeapify <- function(heap, i) {
   l <- lChild_heap(i)
   r <- rChild_heap(i)
   largest <- i
-  if (l < heap$size && heap$array[l] > heap$array[i]) {
+  if (l <= heap$size && heap$array[l] > heap$array[i]) {
     largest <- l
   }
-  if (r < heap$size && heap$array[r] > heap$array[largest]) {
+  if (r <= heap$size && heap$array[r] > heap$array[largest]) {
     largest <- r
   }
   if (largest != i) {
@@ -60,14 +60,6 @@ MaxHeapify <- function(heap, i) {
     heap$array[i] <- heap$array[largest]
     heap$array[largest] <- tmp
     MaxHeapify(heap, largest)
-  }
-  if (largest == 1L && i == 1L) {
-    k <- which.max(get_heap_array(heap))
-    if (k != largest) {
-      tmp <- heap$array[k]
-      heap$array[k] <- heap$array[largest]
-      heap$array[largest] <- tmp
-    }
   }
 }
 
