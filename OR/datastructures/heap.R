@@ -76,8 +76,10 @@ removeMax_heap <- function(heap) {
   }
   # Check if heap array has a single element
   if (heap$size == 1L) {
-    heap$size <- heap$size - 1L
-    return(heap$array[1L])
+    tmp <- heap$array[1L]
+    heap$array <- NULL
+    heap$size  <- heap$size - 1L
+    return(tmp)
   }
   # Remove maximum element
   maxElem <- heap$array[1L]

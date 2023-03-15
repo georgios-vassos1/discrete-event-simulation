@@ -11,6 +11,7 @@ insertKey_heap(heap,  8L)
 insertKey_heap(heap,  2L)
 insertKey_heap(heap, 14L)
 
+removeMax_heap(heap)
 get_heap_array(heap)
 deleteKey_heap(heap, 5L)
 get_heap_array(heap)
