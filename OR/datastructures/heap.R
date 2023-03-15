@@ -61,11 +61,13 @@ MaxHeapify <- function(heap, i) {
     heap$array[largest] <- tmp
     MaxHeapify(heap, largest)
   }
-  # Due to 1-indexing
-  if (largest == 1L) {
-    tmp <- heap$array[i+1L]
-    heap$array[i+1L] <- heap$array[largest]
-    heap$array[largest] <- tmp
+  if (largest == 1L && i == 1L) {
+    k <- which.max(get_heap_array(heap))
+    if (k != largest) {
+      tmp <- heap$array[k]
+      heap$array[k] <- heap$array[largest]
+      heap$array[largest] <- tmp
+    }
   }
 }
 
